@@ -32,6 +32,13 @@ namespace MVC_NotePad.Models.NoticeMng
             this.connection = new SqlConnection(this.configuration.GetSection("ConnectionStrings").GetSection("DefaultConnection").Value);
             this.logger = logger;
         }
+
+        /// <summary>
+        /// 게시판 저장하기
+        /// </summary>
+        /// <param name="notice">게시판</param>
+        /// <param name="formType">폼 타입</param>
+        /// <returns>처리 레코드 수</returns>
         public int SaveNotice(NoticeModel notice, BoardWriteFormType formType)
         {
             int recordCount = 0;
