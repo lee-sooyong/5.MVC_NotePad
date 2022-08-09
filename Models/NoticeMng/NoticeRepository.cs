@@ -153,6 +153,6 @@ namespace MVC_NotePad.Models.NoticeMng
         {
             return this.connection.Execute("DeleteNotice", new { ID = id, Password = password }, commandType: CommandType.StoredProcedure);
         }
-
+        //code test중
     }
 }
