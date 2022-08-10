@@ -1,4 +1,6 @@
-﻿namespace MVC_NotePad.Libs
+﻿using System;
+
+namespace MVC_NotePad.Libs
 {
     /// <summary>
     /// HTML헬퍼
@@ -42,6 +44,11 @@
             return EnCode(source)
                 .Replace("\t"     , "&nbsp;&nbsp;&nbsp;&nbsp;") //&nbsp;는 하나당 한칸의 공백 제공해주는 특수문자이다.
                 .Replace(" " + " ", "&nbsp;&nbsp;");
+        }
+
+        internal static string Encode(string mailAddress)
+        {
+            throw new NotImplementedException();
         }
     }
 }

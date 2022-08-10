@@ -2,8 +2,10 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace MVC_NotePad.Models.NoticeMng
 {
@@ -144,7 +146,7 @@ namespace MVC_NotePad.Models.NoticeMng
         }
 
         /// <summary>
-        /// 게시판 제하기
+        /// 게시판 삭제하기
         /// </summary>
         /// <param name="id">ID</param>
         /// <param name="password">패스워드</param>
@@ -153,6 +155,219 @@ namespace MVC_NotePad.Models.NoticeMng
         {
             return this.connection.Execute("DeleteNotice", new { ID = id, Password = password }, commandType: CommandType.StoredProcedure);
         }
-        //code test중
+        
+        /// <summary>
+        /// 카운트 구하기
+        /// </summary>
+        public int GetCount()
+        {
+            this.logger.LogInformation("EXECUTE GET COUNT");
+
+            try
+            {
+                return this.connection.Query<int>("SELECT COUNT(*) FROM dbo.Notice").SingleOrDefault();
+            }
+            catch (Exception e)
+            {
+                this.logger.LogError($"ERROR GET COUNT : {e}");
+
+                return -1;
+            }
+        }
+
+        /// <summary>
+        /// 카운트 구하기
+        /// </summary>
+        /// <param name="searchField">검색 필드</param>
+        /// <param name="searchQuery">검색 쿼리</param>
+        /// <returns>카운트</returns>
+        public int GetCount(string searchField, string searchQuery)
+        {
+            this.logger.LogInformation("EXECUTE GET COUNT (SEARCH FIELD, SEARCH QUERY)");
+
+            try
+            {
+                return this.connection.Query<int>
+                (
+                    "SearchNoticeCount",
+                    new { SearchField = searchField, SearchQuery = searchQuery },
+                    commandType: CommandType.StoredProcedure
+                )
+                .SingleOrDefault();
+            }
+            catch (Exception e)
+            {
+                this.logger.LogError($"ERROR GET COUNT (SEARCH FIELD, SEARCH QUERY) : {e}");
+
+                return -1;
+            }
+        }
+
+        /// <summary>
+        /// 게시판 리스트 구하기
+        /// </summary>
+        /// <param name="pageIndex">페이지 인덱스</param>
+        public List<NoticeModel> GetNoticeList(int pageIndex)
+        {
+            this.logger.LogInformation("EXECUTE GET NOTICE LIST");
+
+            try
+            {
+                DynamicParameters dynamicParameters = new DynamicParameters(new { Page = pageIndex });
+
+                return this.connection.Query<NoticeModel>("ListNotice", dynamicParameters, commandType: CommandType.StoredProcedure).ToList();
+            }
+            catch (Exception e)
+            {
+                this.logger.LogError($"ERROR GET NOTICE LIST : {e}");
+
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 게시판 리스트 구하기
+        /// </summary>
+        /// <param name="pageIndex">페이지 인덱스</param>
+        /// <param name="searchField">검색 필드</param>
+        /// <param name="searchQuery">검색 쿼리</param>
+        /// <returns>게시판 리스트</returns>
+        public List<NoticeModel> GetNoticeList(int pageIndex, string searchField, string searchQuery)
+        {
+            DynamicParameters dynamicParameters = new DynamicParameters
+            (
+                new
+                {
+                    Page = pageIndex,
+                    SearchField = searchField,
+                    SearchQuery = searchQuery
+                }
+            );
+
+            return this.connection.Query<NoticeModel>
+            (
+                "SearchNotice",
+                dynamicParameters, commandType: CommandType.StoredProcedure).ToList();
+        }
+
+        
+        /// <summary>
+        /// 게시판 보기
+        /// </summary>
+        public NoticeModel GetNotice(int id)
+        {
+            DynamicParameters dynamicParameters = new DynamicParameters(new { ID = id });
+
+            return this.connection.Query<NoticeModel>("ViewNotice", dynamicParameters, commandType: CommandType.StoredProcedure).SingleOrDefault();
+        }
+
+        /// <summary>
+        /// 파일명 구하기
+        /// </summary>
+        /// <param name="id">ID</param>
+        /// <returns>파일명</returns>
+        public string GetFileName(int id)
+        {
+            return this.connection.Query<string>("SELECT FileName FROM dbo.Notice WHERE ID = @ID", new { ID = id }).SingleOrDefault();
+        }
+
+        /// <summary>
+        /// 다운로드 카운트 수정하기
+        /// </summary>
+        /// <param name="id">ID</param>
+        public void UpdateDownloadCount(int id)
+        {
+            DynamicParameters dynamicParameters = new DynamicParameters(new { ID = id });
+
+            this.connection.Execute("UPDATE dbo.Notice SET DownloadCount = DownloadCount + 1 WHERE ID = @ID", dynamicParameters, commandType: CommandType.StoredProcedure);
+        }
+
+        /// <summary>
+        /// 다운로드 카운트 수정하기
+        /// </summary>
+        /// <param name="fileName">파일명</param>
+        public void UpdateDownloadCount(string fileName)
+        {
+            this.connection.Execute("UPDATE dbo.Notice SET DownloadCount = DownloadCount + 1 WHERE FileName = @FileName", new { FileName = fileName });
+        }
+
+        /// <summary>
+        /// 사진이 있는 최근 게시판 리스트 구하기
+        /// </summary>
+        /// <returns>사진이 있는 최근 게시판 리스트 구하기</returns>
+        public List<NoticeModel> GetRecentPhotoNoticeList()
+        {
+            string sql = @"
+SELECT TOP 4
+    ID
+    ,Title
+    ,FileName
+    ,FileSize
+FROM dbo.Notice
+WHERE FileName LIKE '%.png'
+OR    FileName LIKE '%.jpg'
+OR    FileName LIKE '%.jpeg'
+OR    FileName LIKE '%.gif'
+ORDER BY ID DESC
+";
+            return this.connection.Query<NoticeModel>(sql).ToList();
+        }
+
+        /// <summary>
+        /// 특정 카테고리 최근 게시판 리스트 구하기
+        /// </summary>
+        /// <returns>특정 카테고리 최근 게시판 리스트 구하기</returns>
+        public List<NoticeModel> GetRecentCategoryNoticeList(string category)
+        {
+            string sql = @"
+SELECT TOP 3
+    ID
+   ,Title
+   ,Name
+   ,WriteDate
+   ,FileName
+   ,FileSize
+   ,ReadCount
+   ,CommentCount
+   ,ReplyLevel
+FROM  dbo.Notice
+WHERE Category = @Category
+ORDER BY ID DESC
+";
+            return this.connection.Query<NoticeModel>(sql, new { Category = category }).ToList();
+        }
+
+        /// <summary>
+        /// 최근 게시판 리스트 구하기
+        /// </summary>
+        /// <returns>최근 게시판 리스트 구하기</returns>
+        public List<NoticeModel> GetRecentNoticeList()
+        {
+            string sql = "SELECT TOP 3 ID, Title, Name, WriteDate, FROM dbo.Notice ORDER BY ID DESC";
+
+            return this.connection.Query<NoticeModel>(sql).ToList();
+        }
+
+        /// <summary>
+        /// 최근 게시판 리스트 구하기
+        /// </summary>
+        /// <param name="noticeCount">게시판 수</param>
+        /// <returns>최근 게시판 리스트</returns>
+        public List<NoticeModel> GetRecentNoticeList(int noticeCount)
+        {
+            string sql = $"SELECT TOP {noticeCount} ID, Title, Name, WriteDate FROM dbo.Notice ORDER BY ID DESC";
+
+            return this.connection.Query<NoticeModel>(sql).ToList();
+        }
+
+        /// <summary>
+        /// 게시판 고정하기
+        /// </summary>
+        /// <param name="id">ID</param>
+        /// <remarks>특정 게시글을 공지사항으로 올리기</remarks>
+        public void PinNotice(int id)
+        {
+            this.connection.Execute("UPDATE dbo.Notice SET CATEGORY = 'Notice' WHERE ID = @ID", new { ID = id });
+        }
     }
 }

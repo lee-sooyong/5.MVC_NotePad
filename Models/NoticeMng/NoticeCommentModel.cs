@@ -15,6 +15,6 @@ namespace MVC_NotePad.Models.NoticeMng
         /// <summary>
         /// 댓글 리스트
         /// </summary>
-        public List<CommentModel> CommentsList { get; set; }
+        public List<CommentModel> CommentList { get; set; }
     }
 }
