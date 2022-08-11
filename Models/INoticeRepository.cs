@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using MVC_NotePad.Models.NoticeMng;
+using System.Collections.Generic;
 
-namespace MVC_NotePad.Models.NoticeMng
+namespace MVC_NotePad.Models
 {
     /// <summary>
     /// 게시판 저장소 인터페이스

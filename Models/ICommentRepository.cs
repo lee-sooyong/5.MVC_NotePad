@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MVC_NotePad.Models.NoticeMng
+namespace MVC_NotePad.Models
 {
     public interface ICommentRepository
     {

@@ -1,13 +1,14 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using MVC_NotePad.Models.NoticeMng;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 
-namespace MVC_NotePad.Models.NoticeMng
+namespace MVC_NotePad.Models
 {
     public class NoticeRepository : INoticeRepository
     {

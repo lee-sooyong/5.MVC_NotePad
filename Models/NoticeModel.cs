@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace MVC_NotePad.Models.NoticeMng
+namespace MVC_NotePad.Models
 {
     /// <summary>
     /// 게시글 모델

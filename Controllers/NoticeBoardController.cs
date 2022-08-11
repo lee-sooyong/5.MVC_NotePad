@@ -8,8 +8,9 @@ using System.IO;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-using MVC_NotePad.Models.NoticeMng;
+using MVC_NotePad.Models;
 using MVC_NotePad.Libs;
+using MVC_NotePad.Models.NoticeMng;
 
 namespace MVC_NotePad.Controllers
 {
