@@ -20,15 +20,14 @@
     </td>
 </tr>}
 </table>
-<br />
-<script>function CheckForm()
-    {
-        var name     = document.getElementById("name");
-        var password = document.getElementById("password");
-        var comment  = document.getElementById("comment");
 
-        if(name.value.length < 1 || comment.value.length < 1 || password.value.length < 1)
-        {
+<script>
+    function CheckForm() {
+        var name = document.getElementById("name");
+        var password = document.getElementById("password");
+        var comment = document.getElementById("comment");
+
+        if (name.value.length < 1 || comment.value.length < 1 || password.value.length < 1) {
             window.alert("성명, 패스워드 및 댓들을 입력해 주시기 바랍니다.");
 
             name.focus();
@@ -37,7 +36,8 @@
         }
 
         return true;
-    }</script>
+    }
+</script>
 <form asp-controller="NoticeBoard" asp-action="AddComment" method="post" onsubmit="return CheckForm();">
     <input type="hidden" name="noticeID" value="@Model.NoticeID" />
     <table style="width:520px;margin-left:auto;">
@@ -74,5 +74,3 @@
         </tr>
     </table>
 </form>
-<hr />
-출처: https://icodebroker.tistory.com/8806 [ICODEBROKER:티스토리]
