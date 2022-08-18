@@ -1,26 +1,42 @@
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MVC_NotePad
 {
+    /// <summary>
+    /// 프로그램
+    /// </summary>
     public class Program
     {
-        public static void Main(string[] args)
+        #region 프로그램 시작하기 - Main(argumentArray)
+
+        /// <summary>
+        /// 프로그램 시작하기
+        /// </summary>
+        /// <param name="argumentArray">인자 배열</param>
+        public static void Main(string[] argumentArray)
         {
-            CreateHostBuilder(args).Build().Run();
+            CreateHostBuilder(argumentArray).Build().Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+        #endregion
+        #region 호스트 빌더 생성하기 - CreateHostBuilder(argumentArray)
+
+        /// <summary>
+        /// 호스트 빌더 생성하기
+        /// </summary>
+        /// <param name="argumentArray">인자 배열</param>
+        /// <returns>호스트 빌더</returns>
+        public static IHostBuilder CreateHostBuilder(string[] argumentArray) =>
+            Host.CreateDefaultBuilder(argumentArray)
+                .ConfigureWebHostDefaults
+                (
+                    builder =>
+                    {
+                        builder.UseStartup<Startup>();
+                    }
+                );
+
+        #endregion
     }
 }

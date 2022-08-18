@@ -6,7 +6,7 @@ using System.Linq;
 using Dapper;
 
 
-namespace MVC_NotePad.Models.NoticeMng
+namespace MVC_NotePad.Models
 {
     public class CommentRepository : ICommentRepository
     {

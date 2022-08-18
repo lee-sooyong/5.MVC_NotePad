@@ -335,6 +335,7 @@ FROM  dbo.Notice
 WHERE Category = @Category
 ORDER BY ID DESC
 ";
+
             return this.connection.Query<NoticeModel>(sql, new { Category = category }).ToList();
         }
 
