@@ -1,4 +1,4 @@
-﻿namespace MVC_NotePad.Models.NoticeMng
+﻿namespace MVC_NotePad.Models
 {
     /// <summary>
     /// 내용 인코딩 타입

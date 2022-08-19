@@ -1,7 +1,6 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using MVC_NotePad.Models.NoticeMng;
 using System;
 using System.Collections.Generic;
 using System.Data;

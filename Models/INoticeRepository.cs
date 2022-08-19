@@ -1,5 +1,4 @@
-﻿using MVC_NotePad.Models.NoticeMng;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace MVC_NotePad.Models
 {

@@ -1,4 +1,4 @@
-﻿namespace MVC_NotePad.Models.NoticeMng
+﻿namespace MVC_NotePad.Models
 {
     /// <summary>
     /// 게시판 쓰기 폼 타입

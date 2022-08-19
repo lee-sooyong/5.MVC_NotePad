@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MVC_NotePad.Libs
+﻿namespace MVC_NotePad
 {
     /// <summary>
     /// HTML헬퍼
@@ -12,7 +10,7 @@ namespace MVC_NotePad.Libs
         /// </summary>
         /// <param name="source">소스 문자열</param>
         /// <returns>인코딩 문자열</returns>
-        public static string EnCode(string source)
+        public static string Encode(string source)
         {
             string target = string.Empty;
 
@@ -41,14 +39,9 @@ namespace MVC_NotePad.Libs
 
         public static string EncodeIncludingTabAndSpace(string source)
         {
-            return EnCode(source)
+            return Encode(source)
                 .Replace("\t"     , "&nbsp;&nbsp;&nbsp;&nbsp;") //&nbsp;는 하나당 한칸의 공백 제공해주는 특수문자이다.
                 .Replace(" " + " ", "&nbsp;&nbsp;");
-        }
-
-        internal static string Encode(string mailAddress)
-        {
-            throw new NotImplementedException();
         }
     }
 }
