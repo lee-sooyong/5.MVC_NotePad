@@ -4,4 +4,9 @@
 
 <div class="text-center">
     <h1 class="display-4">hi</h1>
+    <p>
+        @* === <Dev> 그리드에 선택된 로우 키 찾기.*@
+        var grid = $("#ReagentConsumptionUpGrid").dxDataGrid("instance");
+        var gridData = getGridRowByKey("ReagentConsumptionUpGrid", grid.option("focusedRowKey"));
+    </p>
 </div>
