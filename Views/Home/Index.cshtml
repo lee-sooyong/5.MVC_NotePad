@@ -5,8 +5,12 @@
 <div class="text-center">
     <h1 class="display-4">hi</h1>
     <p>
-        @* === <Dev> 그리드에 선택된 로우 키 찾기.*@
+        @* === <Dev> 그리드에 선택된 로우 키 찾기 === *@
         var grid = $("#ReagentConsumptionUpGrid").dxDataGrid("instance");
         var gridData = getGridRowByKey("ReagentConsumptionUpGrid", grid.option("focusedRowKey"));
+    </p>
+    <p>
+        @* === <js> formID tag name checked로 html로 만든 체크박스 항시 체크 상태(true) === *@
+        $("#ReagentConsumptionInputForm input[name=use_yn]").prop('checked', true);
     </p>
 </div>
